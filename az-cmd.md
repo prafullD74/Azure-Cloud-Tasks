@@ -680,6 +680,95 @@ AppEvents
     | where TimeGenerated > ago(24h)
     | where Name == "Clicked Schedule Button"
 ```
+---
+```bash
+az vm create \
+  --resource-group learn-c69f19da-ae13-4888-bd11-9aa9ae227277 \
+  --location westus \
+  --name SampleVM1 \
+  --image UbuntuLTS \
+  --admin-username azureuser \
+  --generate-ssh-keys \
+  --verbose
+```
+```bash
+az vm create \
+  --resource-group learn-c69f19da-ae13-4888-bd11-9aa9ae227277 \
+  --location westus \
+  --name SampleVM2 \
+  --image UbuntuLTS \
+  --admin-username azureuser \
+  --generate-ssh-keys \
+  --verbose
+```
+>Create a managed image of the VM with az image create
+```bash
+az image create \
+   --resource-group myResourceGroup \
+   --name myImage --source myVM
+```
+>create a managed image from a VM that uses managed disks
+```bash
+$vmName = "myVM"
+ $rgName = "myResourceGroup"
+ $location = "EastUS"
+ $imageName = "myImage"
+```
+>VM has been deallocated
+```bash
+Stop-AzVM -ResourceGroupName $rgName -Name $vmName -Force
+```
+>Set the status of the virtual machine to Generalized
+```bash
+Set-AzVm -ResourceGroupName $rgName -Name $vmName -Generalized
+```
+>Get the virtual machine.
+```bash
+$vm = Get-AzVM -Name $vmName -ResourceGroupName $rgName
+```
+>Create the image configuration.
+```bash
+$image = New-AzImageConfig -Location $location -SourceVirtualMachineId $vm.Id
+```
+>Create the image.
+```bash
+New-AzImage -Image $image -ImageName $imageName -ResourceGroupName $rgName
+```
+>specify the managed disk ID as the OS disk - Create the image configuration.
+```bash
+$imageConfig = New-AzImageConfig -Location $location
+```
+```bash
+$imageConfig = Set-AzImageOsDisk -Image $imageConfig -OsState Generalized -OsType Windows -ManagedDiskId $diskID
+```
+>Create the image
+```bash
+New-AzImage -ImageName $imageName -ResourceGroupName $rgName -Image $imageConfig
+```
+---
+```bash
+az aks get-credentials --resource-group myRG --name myaks
+```
+```bash
+kubectl get nodes
+```
+```bash
+kubectl get namespaces
+```
+```bash
+kubectl get deployments -n name
+```
+```bash
+kubectl get services -n name
+```
+```bash
+kubectl scale --replicas=2 deployment/name -n name
+```
+```bash
+az container show --resource-group myRG --name name -o table
+```
+---
+
 ```bash
 Heartbeat
     | where TimeGenerated >= startofweek(ago(21d))

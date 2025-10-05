@@ -490,7 +490,141 @@ echo $NVAIP
 ```bash
 ssh -t -o StrictHostKeyChecking=no azureuser@$NVAIP 'sudo sysctl -w net.ipv4.ip_forward=1; exit;'
 ```
+### Create public and private virtual machines
+>command to create the public VM.
+```bash
+az vm create \
+    --resource-group learn-238ad42d-c8a5-445c-a227-bff02b9a490b \
+    --name public \
+    --vnet-name vnet \
+    --subnet publicsubnet \
+    --image UbuntuLTS \
+    --admin-username azureuser \
+    --no-wait \
+    --custom-data cloud-init.txt \
+    --admin-password March21@2023
+```
+### command to create the private VM.
+```bash
+az vm create \
+    --resource-group learn-238ad42d-c8a5-445c-a227-bff02b9a490b \
+    --name private \
+    --vnet-name vnet \
+    --subnet privatesubnet \
+    --image UbuntuLTS \
+    --admin-username azureuser \
+    --no-wait \
+    --custom-data cloud-init.txt \
+    --admin-password March21@#2023
+```
 
+>Linux watch command to check that the VMs are running. The watch command periodically runs the az vm list command so that you can monitor the progress of the VMs.
+```bash
+watch -d -n 5 "az vm list \
+    --resource-group learn-238ad42d-c8a5-445c-a227-bff02b9a490b \
+    --show-details \
+    --query '[*].{Name:name, ProvisioningState:provisioningState, PowerState:powerState}' \
+    --output table"
+```
+
+>command to save the public IP address of the public VM to a variable named PUBLICIP.
+```bash
+PUBLICIP="$(az vm list-ip-addresses \
+    --resource-group learn-238ad42d-c8a5-445c-a227-bff02b9a490b \
+    --name public \
+    --query "[].virtualMachine.network.publicIpAddresses[*].ipAddress" \
+    --output tsv)"
+```
+```bash
+echo $PUBLICIP
+```
+>command to save the public IP address of the private VM to a variable named PRIVATEIP.
+```bash
+PRIVATEIP="$(az vm list-ip-addresses \
+    --resource-group learn-238ad42d-c8a5-445c-a227-bff02b9a490b \
+    --name private \
+    --query "[].virtualMachine.network.publicIpAddresses[*].ipAddress" \
+    --output tsv)"
+```
+```bash
+echo $PRIVATEIP
+```
+
+### Test traffic routing through the network virtual appliance - use the Linux traceroute utility to show how traffic is routed. use the ssh command to run traceroute on each VM.
+>command to trace the route from public to private.
+```bash
+ssh -t -o StrictHostKeyChecking=no azureuser@$PUBLICIP 'traceroute private --type=icmp; exit'
+```
+
+>command to trace the route from private to public.
+```bash
+ssh -t -o StrictHostKeyChecking=no azureuser@$PRIVATEIP 'traceroute public --type=icmp; exit'
+```
+
+### Create a load balancer
+>Create a new public IP address.
+```bash
+az network public-ip create \
+  --resource-group learn-22253669-933f-41e7-91ee-db3dcc9144a4 \
+  --allocation-method Static \
+  --name myPublicIP
+```
+>Create the load balancer.
+```bash
+az network lb create \
+  --resource-group learn-22253669-933f-41e7-91ee-db3dcc9144a4 \
+  --name myLoadBalancer \
+  --public-ip-address myPublicIP \
+  --frontend-ip-name myFrontEndPool \
+  --backend-pool-name myBackEndPool
+```
+>To allow the load balancer to monitor the status of the healthcare portal, create a health probe. The health probe dynamically adds or removes VMs from the load balancer rotation based on their response to health checks.
+```bash
+az network lb probe create \
+  --resource-group learn-22253669-933f-41e7-91ee-db3dcc9144a4 \
+  --lb-name myLoadBalancer \
+  --name myHealthProbe \
+  --protocol tcp \
+  --port 80
+```
+>load balancer rule that's used to define how traffic is distributed to the VMs
+```bash
+az network lb rule create \
+  --resource-group learn-22253669-933f-41e7-91ee-db3dcc9144a4 \
+  --lb-name myLoadBalancer \
+  --name myHTTPRule \
+  --protocol tcp \
+  --frontend-port 80 \
+  --backend-port 80 \
+  --frontend-ip-name myFrontEndPool \
+  --backend-pool-name myBackEndPool \
+  --probe-name myHealthProbe
+```
+>updating the network interfaces you created in the script to use the back-end pool information
+```bash
+az network nic ip-config update \
+  --resource-group learn-22253669-933f-41e7-91ee-db3dcc9144a4 \
+  --nic-name webNic1 \
+  --name ipconfig1 \
+  --lb-name myLoadBalancer \
+  --lb-address-pools myBackEndPool
+```
+```bash
+az network nic ip-config update \
+  --resource-group learn-22253669-933f-41e7-91ee-db3dcc9144a4 \
+  --nic-name webNic2 \
+  --name ipconfig1 \
+  --lb-name myLoadBalancer \
+  --lb-address-pools myBackEndPool
+```
+>command to get the public IP address of the load balancer and the URL for your website
+```bash
+echo http://$(az network public-ip show \
+                --resource-group learn-22253669-933f-41e7-91ee-db3dcc9144a4 \
+                --name myPublicIP \
+                --query ipAddress \
+                --output tsv)
+```
 
 ---
 ```bash

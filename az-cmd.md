@@ -270,6 +270,7 @@ watch -d -n 5 "az vm list \
     --query '[*].{Name:name, ProvisioningState:provisioningState, PowerState:powerState}' \
     --output table"
 ```
+
 ### command to create the peering connection between the SalesVNet and MarketingVNet virtual networks. 
 ```bash
 az network vnet peering create \
@@ -279,6 +280,7 @@ az network vnet peering create \
     --vnet-name SalesVNet \
     --allow-vnet-access
 ```
+
 ### command to create a reciprocal connection from MarketingVNet to SalesVNet.
 ```bash
 az network vnet peering create \
@@ -288,6 +290,7 @@ az network vnet peering create \
     --vnet-name MarketingVNet \
     --allow-vnet-access
 ```
+
 ### command to create the peering connection between the MarketingVNet and ResearchVNet virtual networks:
 ```bash
 az network vnet peering create \
@@ -297,6 +300,7 @@ az network vnet peering create \
     --vnet-name MarketingVNet \
     --allow-vnet-access
 ```
+
 ### command to create the reciprocal connection between ResearchVNet and MarketingVNet:
 ```bash
 az network vnet peering create \
@@ -306,6 +310,7 @@ az network vnet peering create \
     --vnet-name ResearchVNet \
     --allow-vnet-access
 ```
+
 ### command to check the connection between SalesVNet and MarketingVNet:
 ```bash
 az network vnet peering list \
@@ -313,7 +318,8 @@ az network vnet peering list \
     --vnet-name SalesVNet \
     --query "[].{Name:name, Resource:resourceGroup, PeeringState:peeringState, AllowVnetAccess:allowVirtualNetworkAccess}"\
     --output table
-```bash
+```
+
 ### command to check the peering connection between the ResearchVNet and MarketingVNet virtual networks:
 ```bash
 az network vnet peering list \
@@ -322,6 +328,7 @@ az network vnet peering list \
     --query "[].{Name:name, Resource:resourceGroup, PeeringState:peeringState, AllowVnetAccess:allowVirtualNetworkAccess}"\
     --output table
 ```
+
 ###command to check the peering connections for the MarketingVNet virtual network.
 ```bash
 az network vnet peering list \
@@ -330,6 +337,7 @@ az network vnet peering list \
     --query "[].{Name:name, Resource:resourceGroup, PeeringState:peeringState, AllowVnetAccess:allowVirtualNetworkAccess}"\
     --output table
 ```
+
 ### command to look at the routes that apply to the SalesVM network interface:
 ```bash
 az network nic show-effective-route-table \
@@ -337,6 +345,7 @@ az network nic show-effective-route-table \
     --name SalesVMVMNic \
     --output table
 ```
+
 ### command to look at the routes for MarketingVM:
 ```bash
 az network nic show-effective-route-table \
@@ -344,6 +353,7 @@ az network nic show-effective-route-table \
     --name MarketingVMVMNic \
     --output table
 ```
+
 ### command to look at the routes for ResearchVM:
 ```bash
 az network nic show-effective-route-table \
@@ -351,6 +361,7 @@ az network nic show-effective-route-table \
     --name ResearchVMVMNic \
     --output table
 ```
+
 ### command to list the IP addresses you'll use to connect to the VMs:
 ```bash
 az vm list \
@@ -359,7 +370,6 @@ az vm list \
     --show-details \
     --output table
 ```
-
 ### command to create a route table.
 ```bash
 az network route-table create \
@@ -435,7 +445,7 @@ az vm create \
     --admin-password March20@2023
 ```
 
-###Enable IP forwarding for the Azure network interface
+### Enable IP forwarding for the Azure network interface
 >command to get the ID of the NVA network interface.
 ```bash
 NICID=$(az vm nic list \
@@ -462,7 +472,7 @@ echo $NICNAME
 az network nic update --name $NICNAME \
     --resource-group learn-238ad42d-c8a5-445c-a227-bff02b9a490b \
     --ip-forwarding true
-```bash
+```
 
 ### Enable IP forwarding in the appliance
 >command to save the public IP address of the NVA virtual machine to the variable NVAIP.

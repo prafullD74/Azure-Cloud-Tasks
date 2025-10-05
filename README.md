@@ -20,3 +20,5 @@ The Cognitive Services APIs are bunched into five categories…
 6. Azure DataBricks
 
 ---
+1.	Get-AzBastion : Gets a Bastion resource or Bastion resources.
+2.	New-AzBastion: Creates a bastion resource.

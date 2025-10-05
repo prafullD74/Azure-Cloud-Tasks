@@ -625,7 +625,66 @@ echo http://$(az network public-ip show \
                 --query ipAddress \
                 --output tsv)
 ```
+---
+### set up metric alerts by using the CLI. 
+>command to obtain the resource ID of the virtual machine you previously created:
+```bash
+VMID=$(az vm show \
+        --resource-group learn-422d23a3-055b-4751-8ddb-911463ed0a4c \
+        --name vm1 \
+        --query id \
+        --output tsv)
+```
+>command to create a new metric alert that will be triggered when the VM CPU is greater than 80 percent.
+```bash
+az monitor metrics alert create \
+    -n "Cpu80PercentAlert" \
+    --resource-group learn-422d23a3-055b-4751-8ddb-911463ed0a4c \
+    --scopes $VMID \
+    --condition "max percentage CPU > 80" \
+    --description "Virtual machine is running at or greater than 80% CPU utilization" \
+    --evaluation-frequency 1m \
+    --window-size 1m \
+    --severity 3
+```
+---
 
+>the summarize aggregation with the arg_max function returns the record with the most recent value for each IP address.
+```bash
+Heartbeat
+| summarize arg_max(TimeGenerated, *) by ComputerIP
+```
+```bash
+Events
+| where StartTime >= datetime(2018-11-01) and StartTime < datetime(2018-12-01)
+| where State == "FLORIDA"  
+| count
+```
+
+---
+```bash
+SecurityEvent
+    | take 10
+```
+```bash
+SecurityEvent
+    | top 10 by TimeGenerated
+```
+```bash
+SecurityEvent
+    | where TimeGenerated < ago(30m)
+    | where toint(Level) >= 10
+```
+```bash
+AppEvents 
+    | where TimeGenerated > ago(24h)
+    | where Name == "Clicked Schedule Button"
+```
+```bash
+Heartbeat
+    | where TimeGenerated >= startofweek(ago(21d))
+    | summarize dcount(Computer) by endofweek(TimeGenerated) | render barchart kind=default
+```
 ---
 ```bash
 git init

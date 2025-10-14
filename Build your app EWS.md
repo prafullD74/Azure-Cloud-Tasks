@@ -10,7 +10,7 @@
 	- Provide a redirect URL for user redirect after authentication, if needed.
 4. Click Register to register the new app.
 
-###Generate a new key for your application : 
+### Generate a new key for your application : 
 client secrets, are used when exchanging an authorization code for an access token.
 1. On the Microsoft Entra ID page in the Azure portal, select App registrations, and then select your application.
 2. select Certificates & secrets in the left pane,  and create new client secrets.
@@ -151,4 +151,5 @@ $cert=New-SelfSignedCertificate -Subject "CN=DaemonConsoleCert" -CertStoreLocati
    - To verify VG (Volume Group) and LV (Logical Volume) names, use `vgdisplay` `lvdisplay` `vgs` `lvs` and `lsblk -f` to determine which logical volume (LV) is mounted on the root of the filesystem (/).
    - `lvextend` only to increase (extend) the size of a logical volume.
    - `-r` resize filesystem automatically and `-l +100%FREE` use all available space.
+
    - `lvresize` can increase OR decrease the size of a logical volume.

@@ -37,66 +37,6 @@
 2. A **subnet** (short for subnetwork) is a logical, visible division of an IP network. 🌐 Essentially, it's a network within a network. Secure resources within subnets using Network Security Groups.
 3. [**Azure network security**](https://learn.microsoft.com/en-us/azure/security/fundamentals/network-overview).
 
-## [FAQ](https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-faq)
-1. You can link a virtual network to other virtual networks and on-premises networks as long as the CIDR blocks don't overlap.
-2. Configuration
-   - What tools do I use to create a virtual network? - Azure portal, Powershell, Azure CLI and [Network configuration file](https://learn.microsoft.com/en-us/previous-versions/azure/virtual-network/virtual-networks-using-network-configuration-file) (netcfg, for classic virtual networks only)
-   - What address ranges can I use in my virtual networks?
-     1. We recommend that you use the following address ranges. The IETF has set aside these ranges for private, non-routable address spaces.
-        - 10.0.0.0 to 10.255.255.255 (10/8 prefix)
-        - 172.16.0.0 to 172.31.255.255 (172.16/12 prefix)
-        - 192.168.0.0 to 192.168.255.255 (192.168/16 prefix)
-     2. Can also deploy the shared address space reserved in RFC 6598, which is treated as a private IP address space in Azure: 100.64.0.0 to 100.127.255.255 (100.64/10 prefix)
-     3. can't add the following address ranges: 224.0.0.0/4 (multicast), 255.255.255.255/32 (broadcast), 127.0.0.0/8 (loopback), 169.254.0.0/16 (link local), 168.63.129.16/32 (internal DNS).
-   - **Azure reserves the first four addresses and the last address, for a total of five IP addresses within each subnet.**
-     - For example, the IP address range of 192.168.1.0/24 has the following reserved addresses:
-       1. 192.168.1.0: Network address.
-       2. 192.168.1.1: Reserved by Azure for the default gateway.
-       3. 192.168.1.2, 192.168.1.3: Reserved by Azure to map the Azure DNS IP addresses to the virtual network space.
-       4. 192.168.1.255: Network broadcast address.
-   - The smallest supported IPv4 subnet is /29, and the largest is /2 (using CIDR subnet definitions). IPv6 subnets must be exactly /64 in size.
-   - When you apply NSGs at both a network adapter (NIC) and a subnet for a VM:
-     - A subnet-level NSG, followed by a NIC-level NSG, is processed for inbound traffic.
-     - A NIC-level NSG, followed by a subnet-level NSG, is processed for outbound traffic.
-   - virtual networks are not supported to **Multicast (One-to-Many Selective)** and **Broadcast (One-to-All)**.
-   - Use TCP, UDP, ESP, AH, and ICMP TCP/IP protocols in virtual networks. You can't use Dynamic Host Configuration Protocol (DHCP) via Unicast (source port UDP/68, destination port UDP/67). UDP ports 4791 and 65330 are reserved for the host.
-   - Azure-provided default gateway doesn't respond to a ping.
-   - If you want to connect inbound to a resource deployed through Azure Resource Manager, the resource must have a public IP address assigned to it
-   - Every cloud service deployed in Azure has a publicly addressable virtual IP (VIP) assigned to it. You define input endpoints for platform as a service (PaaS) roles and endpoints for virtual machines to enable these services to accept connections from the internet.
-   - A virtual network is limited to a single region. But a virtual network does span availability zones. You can connect virtual networks in different regions by using virtual network peering.
-   - Connect one virtual network to another virtual network by using either: Virtual network peering Or Azure VPN gateway ([Configure a network-to-network VPN gateway connection](https://learn.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-howto-vnet-vnet-resource-manager-portal?toc=/azure/virtual-network/toc.json))
-3. Name resolution (DNS)
-   1. Azure-provided DNS is a multitenant DNS service from Microsoft. Azure registers all of your VMs and cloud service role instances in this service.
-   2. Can't specify a custom DNS suffix for your virtual networks.
-4. Connecting virtual machines
-   1. Resources deployed through the classic deployment model are assigned private IP addresses, even if they're not connected to a virtual network.
-   2. You can't reserve a private IP address. 
-   3. Yes, move VMs from one subnet to another subnet in a virtual network without redeploying. 
-   4. VM retains the MAC address when it's in the deallocated state. The MAC address remains assigned to the network adapter.
-5. Azure services that connect to virtual networks
-   1. Resources deployed through some Azure PaaS services (such as Azure Storage and Azure SQL Database) can restrict network access to virtual networks through the use of virtual network service endpoints or Azure Private Link.
-   2. Can't move services in and out of virtual networks. To move a resource to another virtual network, you have to delete and redeploy the resource.
-6. Security
-   1. Apply network security groups to individual subnets within a virtual network, NICs attached to a virtual network, or both for restricting inbound or outbound traffic flow to resources that are connected to a virtual network.
-7. Virtual network peering
-   1.  A peering connection between virtual networks enables you to route traffic between them privately through IPv4 addresses. Virtual machines in peered virtual networks can communicate with each other as if they're within the same network. These virtual networks can be in the same region or in different regions (also known as global virtual network peering). You can also create virtual network peering connections across Azure subscriptions.
-   2. Global virtual network peering enables you to peer virtual networks in different regions. 
-   3. But you can't connect to resources that are behind a basic load balancer through the front-end IP of the load balancer over global virtual network peering. This restriction doesn't exist for a standard load balancer. Can connect to these resources via Azure ExpressRoute or network-to-network connections through virtual network gateways.
-   4. If your peering connection is in an Initiated state, you created only one link. You must create a bidirectional link to establish a successful connection.
-   5. Can't move a virtual network that has a peering connection to another virtual network. You must delete the peering connection before moving the virtual network.
-   6. Virtual network peering connections go into a Disconnected state when one virtual network peering link is deleted. You must delete both links to re-establish a successful peering connection.
-8. Virtual network service endpoints 
-   - Not all Azure services reside in the customer's virtual network. Most Azure data services (such as Azure Storage, Azure SQL, and Azure Cosmos DB) are multitenant services that can be accessed over public IP addresses.
-   - When you turn on virtual network service endpoints on the network side, and set up appropriate virtual network ACLs on the Azure service side, access to an Azure service is restricted to an allowed virtual network and subnet.
-   - All traffic that uses virtual network service endpoints flows over the Microsoft backbone to provide another layer of isolation from the public internet. Service endpoints always take service traffic directly from your virtual network to the service on the Microsoft Azure backbone network. Service endpoints handle only TCP traffic.
-   - Virtual network service endpoints help protect Azure service resources. Virtual network resources are protected through network security groups.
-   - Yes, virtual network service endpoints and ACLs can be configured across different Microsoft Entra tenants only for Azure Storage and Azure Key Vault; other Azure services do not support cross-tenant service endpoints.
-   - To secure Azure services to multiple subnets within a virtual network or across multiple virtual networks, enable service endpoints on the network side on each of the subnets independently. Then, secure Azure service resources to all of the subnets by setting up appropriate virtual network ACLs on the Azure service side.
-   - When an Azure service account with a virtual network ACL enabled is accessed from outside the virtual network, the request is denied and the service returns an HTTP 403 or 404 error.
-   - Most of the Azure services, virtual networks created in different regions can access Azure services in another region through the virtual network service endpoints. Azure SQL is an exception and is regional in nature.
-   - Use virtual network service endpoint policies to filter virtual network traffic to Azure services, allowing only specific Azure service resources over the service endpoints. 
-9. Once an Azure public IP address is deleted, it cannot be recovered.
-
 ## IMP
 1. When you decide [which regions](https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-vnet-plan-design-arm#regions) in which to deploy resources, consider where consumers of the resources are physically located. Consumers of resources typically want the lowest network latency to their resources.
 2. Lowest network latency means data travels between systems with the least possible delay, so communication happens very fast with minimal waiting time.
@@ -324,4 +264,65 @@ Network management and monitoring services in Azure - Network Watcher, Azure Mon
 - Azure creates several default routes for outbound traffic from a subnet.
 - [peering requirements and constraints](https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-manage-peering#requirements-and-constraints).
 - To resolve names in a peered virtual network, [deploy your own DNS server](https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-name-resolution-for-vms-and-role-instances#name-resolution-that-uses-your-own-dns-server) or use Azure DNS [private domains](https://learn.microsoft.com/en-us/azure/dns/private-dns-overview?toc=/azure/virtual-network/toc.json). Resolving names between resources in a virtual network and on-premises networks also requires you to deploy your own DNS server.
+
 - Policies are applied to the following hierarchy: management group, subscription, and resource group.
+
+## [FAQ](https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-faq)
+1. You can link a virtual network to other virtual networks and on-premises networks as long as the CIDR blocks don't overlap.
+2. Configuration
+   - What tools do I use to create a virtual network? - Azure portal, Powershell, Azure CLI and [Network configuration file](https://learn.microsoft.com/en-us/previous-versions/azure/virtual-network/virtual-networks-using-network-configuration-file) (netcfg, for classic virtual networks only)
+   - What address ranges can I use in my virtual networks?
+     1. We recommend that you use the following address ranges. The IETF has set aside these ranges for private, non-routable address spaces.
+        - 10.0.0.0 to 10.255.255.255 (10/8 prefix)
+        - 172.16.0.0 to 172.31.255.255 (172.16/12 prefix)
+        - 192.168.0.0 to 192.168.255.255 (192.168/16 prefix)
+     2. Can also deploy the shared address space reserved in RFC 6598, which is treated as a private IP address space in Azure: 100.64.0.0 to 100.127.255.255 (100.64/10 prefix)
+     3. can't add the following address ranges: 224.0.0.0/4 (multicast), 255.255.255.255/32 (broadcast), 127.0.0.0/8 (loopback), 169.254.0.0/16 (link local), 168.63.129.16/32 (internal DNS).
+   - **Azure reserves the first four addresses and the last address, for a total of five IP addresses within each subnet.**
+     - For example, the IP address range of 192.168.1.0/24 has the following reserved addresses:
+       1. 192.168.1.0: Network address.
+       2. 192.168.1.1: Reserved by Azure for the default gateway.
+       3. 192.168.1.2, 192.168.1.3: Reserved by Azure to map the Azure DNS IP addresses to the virtual network space.
+       4. 192.168.1.255: Network broadcast address.
+   - The smallest supported IPv4 subnet is /29, and the largest is /2 (using CIDR subnet definitions). IPv6 subnets must be exactly /64 in size.
+   - When you apply NSGs at both a network adapter (NIC) and a subnet for a VM:
+     - A subnet-level NSG, followed by a NIC-level NSG, is processed for inbound traffic.
+     - A NIC-level NSG, followed by a subnet-level NSG, is processed for outbound traffic.
+   - virtual networks are not supported to **Multicast (One-to-Many Selective)** and **Broadcast (One-to-All)**.
+   - Use TCP, UDP, ESP, AH, and ICMP TCP/IP protocols in virtual networks. You can't use Dynamic Host Configuration Protocol (DHCP) via Unicast (source port UDP/68, destination port UDP/67). UDP ports 4791 and 65330 are reserved for the host.
+   - Azure-provided default gateway doesn't respond to a ping.
+   - If you want to connect inbound to a resource deployed through Azure Resource Manager, the resource must have a public IP address assigned to it
+   - Every cloud service deployed in Azure has a publicly addressable virtual IP (VIP) assigned to it. You define input endpoints for platform as a service (PaaS) roles and endpoints for virtual machines to enable these services to accept connections from the internet.
+   - A virtual network is limited to a single region. But a virtual network does span availability zones. You can connect virtual networks in different regions by using virtual network peering.
+   - Connect one virtual network to another virtual network by using either: Virtual network peering Or Azure VPN gateway ([Configure a network-to-network VPN gateway connection](https://learn.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-howto-vnet-vnet-resource-manager-portal?toc=/azure/virtual-network/toc.json))
+3. Name resolution (DNS)
+   1. Azure-provided DNS is a multitenant DNS service from Microsoft. Azure registers all of your VMs and cloud service role instances in this service.
+   2. Can't specify a custom DNS suffix for your virtual networks.
+4. Connecting virtual machines
+   1. Resources deployed through the classic deployment model are assigned private IP addresses, even if they're not connected to a virtual network.
+   2. You can't reserve a private IP address. 
+   3. Yes, move VMs from one subnet to another subnet in a virtual network without redeploying. 
+   4. VM retains the MAC address when it's in the deallocated state. The MAC address remains assigned to the network adapter.
+5. Azure services that connect to virtual networks
+   1. Resources deployed through some Azure PaaS services (such as Azure Storage and Azure SQL Database) can restrict network access to virtual networks through the use of virtual network service endpoints or Azure Private Link.
+   2. Can't move services in and out of virtual networks. To move a resource to another virtual network, you have to delete and redeploy the resource.
+6. Security
+   1. Apply network security groups to individual subnets within a virtual network, NICs attached to a virtual network, or both for restricting inbound or outbound traffic flow to resources that are connected to a virtual network.
+7. Virtual network peering
+   1.  A peering connection between virtual networks enables you to route traffic between them privately through IPv4 addresses. Virtual machines in peered virtual networks can communicate with each other as if they're within the same network. These virtual networks can be in the same region or in different regions (also known as global virtual network peering). You can also create virtual network peering connections across Azure subscriptions.
+   2. Global virtual network peering enables you to peer virtual networks in different regions. 
+   3. But you can't connect to resources that are behind a basic load balancer through the front-end IP of the load balancer over global virtual network peering. This restriction doesn't exist for a standard load balancer. Can connect to these resources via Azure ExpressRoute or network-to-network connections through virtual network gateways.
+   4. If your peering connection is in an Initiated state, you created only one link. You must create a bidirectional link to establish a successful connection.
+   5. Can't move a virtual network that has a peering connection to another virtual network. You must delete the peering connection before moving the virtual network.
+   6. Virtual network peering connections go into a Disconnected state when one virtual network peering link is deleted. You must delete both links to re-establish a successful peering connection.
+8. Virtual network service endpoints 
+   - Not all Azure services reside in the customer's virtual network. Most Azure data services (such as Azure Storage, Azure SQL, and Azure Cosmos DB) are multitenant services that can be accessed over public IP addresses.
+   - When you turn on virtual network service endpoints on the network side, and set up appropriate virtual network ACLs on the Azure service side, access to an Azure service is restricted to an allowed virtual network and subnet.
+   - All traffic that uses virtual network service endpoints flows over the Microsoft backbone to provide another layer of isolation from the public internet. Service endpoints always take service traffic directly from your virtual network to the service on the Microsoft Azure backbone network. Service endpoints handle only TCP traffic.
+   - Virtual network service endpoints help protect Azure service resources. Virtual network resources are protected through network security groups.
+   - Yes, virtual network service endpoints and ACLs can be configured across different Microsoft Entra tenants only for Azure Storage and Azure Key Vault; other Azure services do not support cross-tenant service endpoints.
+   - To secure Azure services to multiple subnets within a virtual network or across multiple virtual networks, enable service endpoints on the network side on each of the subnets independently. Then, secure Azure service resources to all of the subnets by setting up appropriate virtual network ACLs on the Azure service side.
+   - When an Azure service account with a virtual network ACL enabled is accessed from outside the virtual network, the request is denied and the service returns an HTTP 403 or 404 error.
+   - Most of the Azure services, virtual networks created in different regions can access Azure services in another region through the virtual network service endpoints. Azure SQL is an exception and is regional in nature.
+   - Use virtual network service endpoint policies to filter virtual network traffic to Azure services, allowing only specific Azure service resources over the service endpoints. 
+9. Once an Azure public IP address is deleted, it cannot be recovered.

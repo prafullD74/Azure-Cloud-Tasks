@@ -45,9 +45,20 @@
   - How much data loss acceptable. 
   - ASR replication frequency directly affects RPO.
 
-### [Backup]()
+### [Backup](https://learn.microsoft.com/en-us/azure/reliability/concept-redundancy-replication-backup#backup)
 - **Backup** takes a copy of your data at a specific point in time `OR` is the ability to maintain a timestamped copy of data that can be used to restore data that has been lost.
+- Backup can protect you from a variety of risks, including: Catastrophic losses of hardware or other infrastructure, Data corruption and deletion, Cyberattacks, such as ransomware.
+- As part of a disaster recovery strategy, backups typically support an RTO and RPO
+  1. **RTO** is influenced by the time it takes for you to initiate and complete your recovery processes, including restoring a backup and validating that the restoration completed successfully.
+  2. **RPO** is influenced by the frequency of your backup process. If you take backups more frequently, it means you lose less data if you have to restore from a backup.
+- [Azure Backup](https://learn.microsoft.com/en-us/azure/backup/backup-overview) is a dedicated backup solution for several key Azure services, including virtual machines, Azure Storage, and Azure Kubernetes Service (AKS).
 
+### Backup vs. replication
+1. Replication supports day-to-day resiliency and is commonly used in a high availability strategy. However, replication doesn't protect you against risks that result in data loss or corruption.
+2. In contrast, backup is often a last line of defense against catastrophic risks. A total restore from a backup is often part of a disaster recovery plan.
+
+### [Manage capacity with over-provisioning](https://learn.microsoft.com/en-us/azure/reliability/concept-redundancy-replication-backup#manage-capacity-with-over-provisioning)
+1. Over-provisioning allows the solution to tolerate some degree of capacity loss and still continue to function without degraded performance.
 
 ### [Health monitoring]() 
 1. The health of each instance determines whether that instance can do its work, and health monitoring is important to enable fast recovery if there's a problem.

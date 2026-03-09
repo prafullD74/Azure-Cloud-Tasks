@@ -25,14 +25,29 @@
 ### [Replication: Redundancy for data](https://learn.microsoft.com/en-us/azure/reliability/concept-redundancy-replication-backup#replication-redundancy-for-data)
 - **Replication** or data redundancy is the ability to maintain multiple copies of data, called **replicas**.
   - Replication synchronizes all changes among multiple replicas and doesn't maintain old copies of data.
-- **Backup** is the ability to maintain a timestamped copy of data that can be used to restore data that has been lost.
-
+- [Synchronous and asynchronous replication](https://learn.microsoft.com/en-us/azure/reliability/concept-redundancy-replication-backup#synchronous-and-asynchronous-replication)
+  1. **Synchronous replication** requires updates to take place on multiple replicas before the update is considered complete. Synchronous replication can guarantee consistency, which means it can support an RPO of zero.
+  2. **Asynchronous replication** happens in the background. However, if you need to fail over to another replica, it might not have the latest data, and so your RPO must be greater than zero.
+- [Replica roles](https://learn.microsoft.com/en-us/azure/reliability/concept-redundancy-replication-backup#replica-roles)
+  1. **Active-passive replication** means that you have one active replica, which is responsible for acting as the source of truth. Any changes made to the data must be applied to that replica. Any other replicas act in a passive role, which means they receive updates to the data from the active replica, but they don't process changes directly from clients. Passive replicas aren't used for live traffic unless a failover occurs and the replicas' roles change.
+     - ![Diagram shows an active-passive system with one passive replica](https://learn.microsoft.com/en-us/azure/reliability/media/concept-redundancy-replication-backup/replica-roles-active-passive.svg)
+     - RTO for an active-passive system is measured in minutes.
+     - **read-only replicas**, which enables you to read (but not write) data from the passive replicas. Several Azure services support read-only replicas, including [Azure Storage with the read access GRS (RA-GRS) replication type](https://learn.microsoft.com/en-us/azure/storage/common/storage-redundancy#read-access-to-data-in-the-secondary-region), and [Azure SQL Database active geo-replication](https://learn.microsoft.com/en-us/azure/azure-sql/database/active-geo-replication-overview?view=azuresql&preserve-view=true).
+  2. **Active-active replication** enables using multiple active replicas for live traffic simultaneously, and any of the replicas can process requests.
+     - ![Active-active replication](https://learn.microsoft.com/en-us/azure/reliability/media/concept-redundancy-replication-backup/replica-roles-active-active.svg)
+     - Active-active replication can support an RTO of zero in some situations.
+- If you use virtual machines, you can use [Azure Site Recovery](https://learn.microsoft.com/en-us/azure/site-recovery/site-recovery-overview) to replicate virtual machines and their disks between availability zones or to another Azure region.
+  
 ### Each replication type affects two key metrics used in discussions of business continuity: 
 - [**recovery time objective (RTO)**](https://learn.microsoft.com/en-us/azure/reliability/concept-redundancy-replication-backup#replication-redundancy-for-data), which is the maximum amount of downtime you can tolerate in a disaster scenario.
   - How fast system must come back.
 - [**recovery point objective (RPO)**](), which is the maximum amount of data loss you can tolerate in a disaster scenario.
   - How much data loss acceptable. 
   - ASR replication frequency directly affects RPO.
+
+### [Backup]()
+- **Backup** takes a copy of your data at a specific point in time `OR` is the ability to maintain a timestamped copy of data that can be used to restore data that has been lost.
+
 
 ### [Health monitoring]() 
 1. The health of each instance determines whether that instance can do its work, and health monitoring is important to enable fast recovery if there's a problem.

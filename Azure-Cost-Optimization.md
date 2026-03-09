@@ -7,6 +7,28 @@
 2. [Cost Management](https://www.youtube.com/c/AzureCostManagement) works with Azure Advisor to provide cost optimization recommendations. [Optimizing cloud investments in Cost Management](https://www.youtube.com/watch?v=cSNPoAb-TNc)
 3. Azure Advisor helps you optimize and improve efficiency by identifying idle and underutilized resources. [Tutorial: Optimize costs from recommendations](https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/tutorial-acm-opt-recommendations)
 
+## [Microsoft Cost Management](https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/overview-cost-management#optimize-costs)
+1. [Cost Management](https://portal.azure.com/#view/Microsoft_Azure_CostManagement/Menu) is a set of FinOps tools that enable you to analyze, manage, and optimize your costs.
+2. [Billing](https://portal.azure.com/#view/Microsoft_Azure_GTM/ModernBillingMenuBlade) provides all the tools you need to manage your billing account and pay invoices.
+3. [Estimate your cloud costs](https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/overview-cost-management#estimate-your-cloud-costs)
+   1. [Azure Migrate](https://azure.microsoft.com/products/azure-migrate/) is a free tool that helps you analyze your on-premises workloads and plan your cloud migration.
+   2. The [Azure pricing calculator](https://azure.microsoft.com/pricing/calculator/) is a free cost management tool that allows users to understand and estimate costs of Azure Services and products. 
+4. [Report on and analyze costs](https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/overview-cost-management#report-on-and-analyze-costs)
+   1. [Cost Analysis](https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/quick-acm-cost-analysis) is a tool for ad-hoc cost exploration. Get quick answers with lightweight insights and analytics. 
+   2. [Exports and the Cost Details API](https://learn.microsoft.com/en-us/azure/cost-management-billing/automate/usage-details-best-practices) enable you to integrate cost details into external systems or business processes.
+5. [Monitor costs with alerts](https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/overview-cost-management#monitor-costs-with-alerts)
+   1. [Budget alerts](https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/tutorial-acm-create-budgets) notify recipients when cost exceeds a predefined cost or forecast amount.
+   2. [Anomaly alerts](https://learn.microsoft.com/en-us/azure/cost-management-billing/understand/analyze-unexpected-charges) notify recipients when an unexpected change in daily usage has been detected.
+   3. [Scheduled alerts](https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/save-share-views#subscribe-to-scheduled-alerts) notify recipients about the latest costs on a daily, weekly, or monthly schedule based on a saved cost view in Cost Analysis.
+6. [Optimize costs](https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/overview-cost-management#optimize-costs)
+   1. [Azure Advisor cost recommendations](https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/tutorial-acm-opt-recommendations) should be your first stop when interested in optimizing existing resources. 
+      - Cost Management works with Azure Advisor to provide cost optimization recommendations. Azure Advisor helps you optimize and improve efficiency by identifying idle and underutilized resources. [Tutorial: Optimize costs from recommendations](https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/tutorial-acm-opt-recommendations)
+      - Azure Advisor monitors your virtual machine usage for seven days and then identifies underutilized virtual machines. Virtual machines whose CPU utilization is five percent or less and network usage is seven MB or less for four or more days are considered low-utilization virtual machines.
+      - The 5% or less CPU utilization setting is the default, but you can adjust the settings. For adjusting the setting >> [Configure the average CPU utilization rule or the low usage virtual machine recommendation](https://learn.microsoft.com/en-us/azure/advisor/advisor-get-started#configure-recommendations)
+   2. [Azure savings plans ](https://learn.microsoft.com/en-us/azure/cost-management-billing/savings-plan/)
+   3. [Azure reservations](https://azure.microsoft.com/reservations/)
+   4. [Azure Hybrid Benefit]([Azure Hybrid Benefit](https://azure.microsoft.com/pricing/hybrid-benefit/))
+
 ### 8 ways to optimize costs today
 1. [Shut down unused resources](https://go.microsoft.com/fwlink/?linkid=2237711&clcid=0x4009)
    - Identify idle virtual machines (VMs), ExpressRoute circuits, and other resources with Azure Advisor. Get recommendations on which resources to shut down, and see how much you would save.

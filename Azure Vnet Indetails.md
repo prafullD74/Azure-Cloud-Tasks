@@ -205,6 +205,7 @@ Networking services in Azure that protects and monitor your network resources - 
 1. Azure Web Application Firewall provides centralized protection of your web applications from common exploits and vulnerabilities.
 2. Azure Web Application Firewall (WAF) provides protection to your web applications from common web exploits and vulnerabilities such as SQL injection, and cross site scripting.
 3. Azure Web Application Firewall can be deployed with these Microsoft services: Azure Application Gateway, Azure Application Gateway for Containers, Azure Front Door, Azure Content Delivery Network
+![WAF uses rules to monitor HTTP requests and responses, and it can block or allow traffic based on the rules you define](https://learn.microsoft.com/en-us/azure/networking/security/media/network-security/web-application-firewall.png)
 
 ## [DDoS Protection](https://learn.microsoft.com/en-us/azure/ddos-protection/ddos-protection-overview)
 1. Distributed denial of service (DDoS) attacks

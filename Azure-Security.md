@@ -1,6 +1,7 @@
 # [Introduction to Azure security](https://learn.microsoft.com/en-in/azure/security/fundamentals/overview)
 
 ## [Checklist](https://learn.microsoft.com/en-us/azure/well-architected/security/checklist)
+1. Zero Trust principles: "Verify explicitly", "Use least privilege access", and "Assume breach"
 
 ## [Azure security capabilities](https://go.microsoft.com/fwlink/?linkid=2313766&clcid=0x4009)
 1. [Azure Key Vault](https://azure.microsoft.com/en-in/products/key-vault/): Safeguard cryptographic keys and other secrets used by cloud apps and services.

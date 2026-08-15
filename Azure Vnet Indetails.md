@@ -6,6 +6,19 @@
 ## [Hub-spoke network topology in Azure](https://learn.microsoft.com/en-us/azure/architecture/networking/architecture/hub-spoke)
 ![alt text](image-2.png)
 
+## [Architecture best practices for Azure Virtual Network](https://learn.microsoft.com/en-us/azure/well-architected/service-guides/virtual-network)
+
+- [Network security](https://learn.microsoft.com/en-us/azure/virtual-network/secure-virtual-network#network-security) for virtual networks focuses on controlling traffic flow, implementing segmentation, and protecting against external threats.
+  - Segment workloads by using network security groups and application security groups.
+  - Deploy Azure Firewall for centralized,<span title="stateful protection means the firewall tracks active network connections so it automatically allows safe return traffic while blocking unauthorized incoming requests">stateful protection</span>
+  - Replicate and maintain consistent NSGs and Azure Firewall rules across both primary and disaster recovery (DR) sites.
+- [Operational Excellence design principles](https://learn.microsoft.com/en-us/azure/well-architected/operational-excellence/principles)
+  - [Design review checklist for Operational Excellence](https://learn.microsoft.com/en-us/azure/well-architected/operational-excellence/checklist)
+    1. Use [virtual network flow logs](https://learn.microsoft.com/en-us/azure/network-watcher/vnet-flow-logs-overview) and [traffic analytics](https://learn.microsoft.com/en-us/azure/network-watcher/traffic-analytics) to identify changes in demand and patterns.
+    2. Use the [connection monitor feature](https://learn.microsoft.com/en-us/azure/network-watcher/connection-monitor-overview) to analyze and identify problems like connection drops before they affect applications.
+    3. Leverage [Network Watcher VM Network Troubleshooter](https://learn.microsoft.com/en-us/azure/network-watcher/network-watcher-monitoring-overview) for integrated network diagnostics in Azure portal.
+- Create an [Azure Policy Compliance Dashboard](https://learn.microsoft.com/en-us/azure/governance/policy/how-to/get-compliance-data) to identify noncompliant resources and take corrective actions.
+
 
 ## [Virtual Network](https://learn.microsoft.com/en-us/azure/virtual-network/)
 1. All resources in a virtual network can communicate outbound with the internet, by default.

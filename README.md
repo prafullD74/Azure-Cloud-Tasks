@@ -1,6 +1,17 @@
 # Azure-Cloud-Tasks
 Service worked
 
+---
+
+# [Cloud Adoption Framework for Microsoft](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/)
+
+## [What is the Cloud Adoption Framework?](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/overview)
+
+> The Cloud Adoption Framework provides a roadmap for cloud adoption. The Cloud Adoption Framework is designed for decision makers responsible for Azure adoption.
+
+## [How to adopt Azure](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/why-azure#how-to-adopt-azure)
+
+## [Microsoft Cloud for Developers](https://learn.microsoft.com/en-us/microsoft-cloud/)
 
 ---
 Cognitive Services are a set of machine learning algorithms that Microsoft has developed to solve problems in the field of Artificial Intelligence (AI).

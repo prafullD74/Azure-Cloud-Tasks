@@ -4,6 +4,42 @@
 
 ### [Architecture styles](https://learn.microsoft.com/en-us/azure/architecture/guide/architecture-styles/)
 
+1. An architecture style is a family of architectures that share specific characteristics. 
+
+2. [N-tier](https://learn.microsoft.com/en-us/azure/architecture/guide/architecture-styles/n-tier)
+
+   ![N-tier](https://learn.microsoft.com/en-us/azure/architecture/guide/architecture-styles/images/n-tier-logical.svg)
+   - N-tier is a traditional architecture for enterprise applications that divides an application into logical layers and physical tiers.
+   - Traditional layered architecture for enterprise applications, suitable for existing applications with minimal changes needed for Azure migration.
+3. [Web-Queue-Worker](https://learn.microsoft.com/en-us/azure/architecture/guide/architecture-styles/web-queue-worker)
+
+   ![Web-Queue-Worker](https://learn.microsoft.com/en-us/azure/architecture/guide/architecture-styles/images/web-queue-worker-logical.svg)
+   - Web-Queue-Worker is an architecture that consists of a web front end, a message queue, and a back-end worker.
+   - The web front end handles HTTP requests and user interactions, while the worker performs resource-intensive tasks, long-running workflows, or batch operations. Communication between the front end and worker occurs through an asynchronous message queue.
+   - This architecture is ideal for applications with relatively simple domains that have some resource-intensive processing requirements. It's easy to understand and deploy with managed Azure services like App Service and Azure Functions.
+4. [Microservices](https://learn.microsoft.com/en-us/azure/architecture/guide/architecture-styles/microservices)
+
+   ![Microservices](https://learn.microsoft.com/en-us/azure/architecture/guide/architecture-styles/images/microservices-logical.svg)
+   - The Microservices architecture decomposes applications into a collection of small, autonomous services.
+   - Microservices enable teams to work autonomously and support frequent updates with higher release velocity. This architecture is well-suited for complex domains that require frequent changes and innovation.
+5. [Event-driven architecture](https://learn.microsoft.com/en-us/azure/architecture/guide/architecture-styles/event-driven)
+
+   ![Event-driven architecture](https://learn.microsoft.com/en-us/azure/architecture/guide/architecture-styles/images/event-driven.svg#lightbox)
+   - Event-driven architectures use a [publish-subscribe model](https://learn.microsoft.com/en-us/azure/architecture/patterns/publisher-subscriber) where event producers generate streams of events, and event consumers respond to those events in near real time.
+   - Uses a publish-subscribe model for real-time processing, suitable for IoT and high-volume data applications.
+6. [Big data](https://learn.microsoft.com/en-us/azure/architecture/guide/architecture-styles/big-data)
+
+   ![Big data](https://learn.microsoft.com/en-us/azure/architecture/guide/architecture-styles/images/big-data-logical.svg#lightbox)
+   - Big data architectures handle the ingestion, processing, and analysis of data that's too large or complex for traditional database systems
+   - Manages large datasets with batch and real-time processing capabilities, essential for analytics and machine learning.
+7. [Big compute](https://learn.microsoft.com/en-us/azure/architecture/guide/architecture-styles/big-compute)
+
+   ![Big compute](https://learn.microsoft.com/en-us/azure/architecture/guide/architecture-styles/images/big-compute-logical.png)
+   - Big compute architectures support large-scale workloads that require hundreds or thousands of cores for computationally intensive operations.
+   - The work can be split into discrete tasks that run across many cores simultaneously, with each task taking input, processing it, and producing output.
+   - Big compute is essential for simulations, financial risk modeling, scientific computing, engineering stress analysis, and 3D rendering.
+   - Supports high-performance computing workloads, enabling efficient task distribution across many cores.
+
 ### [Browse Azure Architectures](https://learn.microsoft.com/en-us/azure/architecture/browse/)
 
 ---

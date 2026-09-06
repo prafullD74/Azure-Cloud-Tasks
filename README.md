@@ -13,6 +13,7 @@ Service worked
 
 ## [Microsoft Cloud for Developers](https://learn.microsoft.com/en-us/microsoft-cloud/)
 
+## [Azure Sandbox](https://learn.microsoft.com/en-us/azure/architecture/guide/azure-sandbox/azure-sandbox)
 ---
 Cognitive Services are a set of machine learning algorithms that Microsoft has developed to solve problems in the field of Artificial Intelligence (AI).
 The Cognitive Services APIs are bunched into five categories…
